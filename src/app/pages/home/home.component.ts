@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { afterNextRender, Component, inject } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AlertService, ApiService } from '@services';
 
 export interface PeriodicElement {
   name: string;
@@ -10,18 +11,6 @@ export interface PeriodicElement {
   symbol: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -30,8 +19,46 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  private api = inject(ApiService);
+  private alert = inject(AlertService);
+
+  displayedColumns: string[] = ['image', 'name', 'price', 'type', 'status', 'action'];
+  dataSource!: MatTableDataSource<PeriodicElement>;
+
+  constructor() {
+    afterNextRender(() => {
+      this.fetchAllPRoducts();
+    })
+  }
+
+  private fetchAllPRoducts() {
+    let ELEMENT_DATA: any[] = [];
+    this.api.get('/get/products').subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          console.log("res: ", res);
+          res.data.forEach((prod: any) => {
+            ELEMENT_DATA.push({
+              image: prod.images ? prod.images[0] : '',
+              name: prod.name,
+              price: prod.price,
+              type: prod.product_type,
+              status: prod.status,
+              action: 'Action'
+            })
+          })
+          this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+        }
+        else {
+          this.alert.toastify(res.message || 'Failed to fetch products', 'warning');
+        }
+      },
+      error: (error) => {
+        this.alert.toastify(error.message || 'Failed to fetch products', 'error');
+      }
+    })
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
