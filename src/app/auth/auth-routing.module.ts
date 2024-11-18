@@ -1,7 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./auth.component').then(m => m.AuthComponent),
+    children: [
+      { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
+      { path: 'register', loadComponent: () => import('./registration/registration.component').then(m => m.RegistrationComponent) },
+      { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
+      // { path: 'forgot-password', loadComponent: () => import('./forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+      // { path: 'reset-password', loadComponent: () => import('./reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+    ]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
