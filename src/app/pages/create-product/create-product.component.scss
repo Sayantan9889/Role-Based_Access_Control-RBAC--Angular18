@@ -1,0 +1,14 @@
+.add-product-form {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #5e5e5e;
+  border-radius: 20px;
+  overflow: auto;
+
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: none;  // Firefox
+  &::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar */
+  }
+}
