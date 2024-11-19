@@ -1,19 +1,72 @@
 <div class="add-product-form">
   <div class="form-container">
     <div class="title">
-      <h3>Add Product</h3>
+      <h5>Add Product</h5>
     </div>
     <form>
-      <div class="input-group has-validation">
-        <span class="input-group-text"><mat-icon>brand_family</mat-icon></span>
-        <div class="form-floating is-invalid">
-          <input type="text" class="form-control is-invalid" id="floatingInputGroup2" placeholder="Username" required>
-          <label for="floatingInputGroup2">Username</label>
+      <div class="file-container mb-3">
+        <div class="file-upload-container">
+          <input type="file" id="file-upload" [multiple]="true" class="file-input"
+            accept="image/png, image/gif, image/jpeg, image/svg+xml" (change)="handleImages($event)" />
+          <label for="file-upload" class="upload-label">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i> <!-- Font Awesome icon -->
+            </div>
+            <span>Browse file to upload</span>
+          </label>
         </div>
-        <div class="invalid-feedback">
-          Please choose a username.
+        @for (file of images; track file) {
+        <div class="uploaded-file">
+          <div class="img-name">
+            <img [src]="file.url" alt="">
+            <p class="file-name">{{file.file.name}}</p>
+          </div>
+          <button type="button" class="btn" (click)="removeImage( $index)"><i
+              class="fa-solid fa-xmark"></i></button>
+        </div>
+        }
+      </div>
+
+
+      <div class="input-group mb-3">
+        <span class="input-group-text"><i class="fa-solid fa-file-signature"></i></span>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="prodName" placeholder="Enter product name">
+          <label for="prodName">Name</label>
         </div>
       </div>
+
+      <div class="row g-2  mb-3">
+        <div class="input-group col-md">
+          <span class="input-group-text">₹</span>
+          <div class="form-floating">
+            <input type="text" class="form-control" id="price" placeholder="Enter product price">
+            <label for="price">Price</label>
+          </div>
+        </div>
+        <div class="col-md input-group">
+          <span class="input-group-text"><i class="fa-solid fa-wand-sparkles"></i></span>
+          <div class="form-floating">
+            <select class="form-select" id="productType">
+              <option selected disabled>Select product type (New/Used)</option>
+              <option value="New">New</option>
+              <option value="Used">Used</option>
+            </select>
+            <label for="productType">Product type</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text"><i class="fa-solid fa-pen-to-square"></i></span>
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Product Description" id="productDesc"
+            style="height: 100px"></textarea>
+          <label for="productDesc">Comments</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary px-5">Add</button>
     </form>
   </div>
 </div>
