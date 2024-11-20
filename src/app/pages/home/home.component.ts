@@ -72,6 +72,10 @@ export class HomeComponent {
     this.api.delete('delete/product/'+id).subscribe({
       next: (res: any) => {
         if (res.status == 200) {
+          const data = this.dataSource.data;
+          const index = data.findIndex(p => p.id === id);
+          data.splice(index, 1);
+          this.dataSource = new MatTableDataSource(data);
           this.alert.toastify('Product deleted successfully', 'success');
         }
         else {
