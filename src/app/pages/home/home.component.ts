@@ -3,7 +3,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertService, ApiService } from '@services';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 export interface PeriodicElement {
   image: string,
@@ -22,9 +22,9 @@ export interface PeriodicElement {
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-
   private api = inject(ApiService);
   private alert = inject(AlertService);
+  private router = inject(Router);
 
   displayedColumns: string[] = ['image', 'name', 'price', 'type', 'status', 'action'];
   dataSource!: MatTableDataSource<PeriodicElement>;
@@ -74,5 +74,10 @@ export class HomeComponent {
   deleteProduct(element: any) {
     console.log("delete element: ", element);
 
+  }
+
+  goTo(id:string) {
+    this.router.navigateByUrl(`/edit/product/${id}`)
+    console.log(`/edit/product/${id}`);
   }
 }
