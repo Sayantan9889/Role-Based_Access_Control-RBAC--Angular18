@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService, ApiService } from '@services';
-import { Router } from 'express';
-import { NgxMaskDirective } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-update-product',
   standalone: true,
   imports: [MatIconModule, ReactiveFormsModule, NgxMaskDirective],
+  providers: [provideNgxMask()],
   templateUrl: './update-product.component.html',
   styleUrl: './update-product.component.scss'
 })
@@ -19,6 +19,7 @@ export class UpdateProductComponent {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
+  private productId: string | null = null;
   protected images: Array<{ file: any, url: string }> = [];
   protected form: FormGroup = new FormGroup({
     imageArr: new FormControl(''),
@@ -28,34 +29,39 @@ export class UpdateProductComponent {
     product_type: new FormControl('New'),
   });
 
-  // constructor() {
-  //   const productId = this.activatedRoute.snapshot.paramMap.get('id');
-  //   if(productId) this.fetchProduct(productId);
-  //   else this.alert.toastify('Could not find id from url.', 'error')
-  // }
+  constructor() {
+    this.productId = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log("productId: ", this.productId);
+    if (this.productId) this.fetchProduct(this.productId);
+    else this.alert.toastify('Could not find id from url.', 'error')
+  }
 
-  private fetchProduct(id:string) {
+  private fetchProduct(id: string) {
     this.api.get(`get/products/${id}`).subscribe({
       next: (res: any) => {
         if (res.status == 200) {
           console.log("product: ", res.data);
           const product = res.data;
           this.form.patchValue({
-            imageArr: product.images? product.images[0] : '',
             name: product.name,
             price: product.price,
             description: product.description,
             product_type: product.product_type,
           });
-          this.images = [... product.images]
+          product.images && product.images.map((image: string) => {
+            this.images.push({ file: image, url: image });
+          })
           this.form.markAllAsTouched();
         }
         else {
           this.alert.toastify(res.message || 'Failed to fetch product', 'warning');
+          console.log("res: ", res);
         }
       },
       error: (error: any) => {
-        this.alert.toastify(error.message || 'Failed to fetch product', 'error');
+        this.alert.toastify(error.error.message || 'Failed to fetch product', 'error');
+        console.log("error.message: ", error);
+
       }
     });
   }
@@ -80,6 +86,48 @@ export class UpdateProductComponent {
   }
 
   protected updateProduct() {
+    if (this.form.valid) {
+      this.form.removeControl('imageArr');
 
+      const formData: any = new FormData();
+
+      Object.keys(this.form.value).forEach((key: string) => {
+        formData.append(key, this.form.value[key]);
+      });
+
+      console.log("this.images: ", this.images);
+      this.images.forEach((img: any) => {
+        if (typeof img.file == "string") {
+          formData.append('images', img.file)
+        } else {
+          formData.append('images', img.file, img.file.name);
+        }
+      });
+
+      this.api.put(`update/product/${this.productId}`, formData).subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            console.log("updated product: ", res.data);
+            this.alert.toastify(res.message || 'Product updated successfully', 'success');
+            this.router.navigate(['/home']);
+          }
+          else {
+            this.alert.toastify(res.message || 'Failed to fetch products', 'warning');
+          }
+        },
+        error: (error) => {
+          this.alert.toastify(error.error.message || 'Failed to fetch products', 'error');
+        }
+      })
+    } else {
+      this.form.markAllAsTouched();
+      /**Scroll to the first invalid field */
+      let _form = document.getElementById('add-product-form');
+      if (_form) {
+        let firstInvalidControl = _form.getElementsByClassName('ng-invalid')[0];
+        console.log("firstInvalidControl: ", firstInvalidControl);
+        firstInvalidControl?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }
 }

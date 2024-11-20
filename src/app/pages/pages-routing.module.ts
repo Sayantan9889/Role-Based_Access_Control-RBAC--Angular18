@@ -8,7 +8,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: "home", pathMatch: 'full' },
       { path: 'home', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent) },
-      { path: 'edit/product/:id', loadComponent: () => import('./update-product/update-product.component').then(m => m.UpdateProductComponent) },
+      { path: 'edit/product/:id',loadComponent: () => import('./update-product/update-product.component').then(c => c.UpdateProductComponent) },
       { path: 'add/product', loadComponent: () => import('./create-product/create-product.component').then(m => m.CreateProductComponent) },
     ]
   },

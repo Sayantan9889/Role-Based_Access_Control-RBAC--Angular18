@@ -1,11 +1,11 @@
 <div class="add-product-form">
   <div class="form-container">
     <div class="title">
-      <h5>Add Product</h5>
+      <h5>Edit Product</h5>
     </div>
     <form [formGroup]="form" id="add-product-form">
       <div class="input-field mb-3">
-        <div class="file-container" [class.error-div]="form.controls['imageArr'].touched && images.length < 1">
+        <div class="file-container" [class.error-div]="form.controls['imageArr'] && form.controls['imageArr'].touched && images.length < 1">
           <div class="file-upload-container">
             <input type="file" id="file-upload" [multiple]="true" class="file-input"
               accept="image/png, image/gif, image/jpeg, image/svg+xml" formControlName="imageArr"
@@ -21,7 +21,7 @@
           <div class="uploaded-file">
             <div class="img-name">
               <img [src]="file.url" alt="">
-              <p class="file-name">{{file.file.name}}</p>
+              <p class="file-name">{{file.file.name || file.url}}</p>
             </div>
             <button type="button" class="btn" (click)="removeImage( $index)"><i class="fa-solid fa-xmark"></i></button>
           </div>

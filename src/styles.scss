@@ -49,3 +49,13 @@ body {
   border: 1px solid rgb(255, 60, 60) !important;
   border-radius: 5px;
 }
+
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #dad8b2 !important;
+}
+
+.swal2-container {
+  width: auto !important;
+  min-width: 370px !important;
+}

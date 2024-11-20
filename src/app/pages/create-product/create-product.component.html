@@ -5,7 +5,7 @@
     </div>
     <form [formGroup]="form" id="add-product-form">
       <div class="input-field mb-3">
-        <div class="file-container" [class.error-div]="form.controls['imageArr'].touched && images.length < 1">
+        <div class="file-container" [class.error-div]="form.controls['imageArr'] && form.controls['imageArr'].touched && images.length < 1">
           <div class="file-upload-container">
             <input type="file" id="file-upload" [multiple]="true" class="file-input"
               accept="image/png, image/gif, image/jpeg, image/svg+xml" formControlName="imageArr"
@@ -87,11 +87,11 @@
 
 
       <div class="input-field mb-3">
-        <div class="input-group" [class.error-div]="form.controls['description'].touched && (form.controls['description'].hasError('required') || form.controls['description'].hasError('minlength'))">
+        <div class="input-group" [class.error-div]="form.controls['description'].touched && (form.controls['description'].hasError('required') || form.controls['description'].hasError('maxlength'))">
           <span class="input-group-text"><i class="fa-solid fa-pen-to-square"></i></span>
           <div class="form-floating">
             <textarea class="form-control" placeholder="Product Description" id="productDesc" style="height: 100px"
-              formControlName="description" minlength="20"></textarea>
+              formControlName="description" maxlength="100"></textarea>
             <label for="productDesc">Description*</label>
           </div>
         </div>
@@ -99,7 +99,7 @@
           @if(form.controls['description'].touched && form.controls['description'].hasError('required')) {
           <p>Description is required</p>
           }
-          @if(form.controls['description'].touched && form.controls['description'].hasError('minlength')) {
+          @if(form.controls['description'].touched && form.controls['description'].hasError('maxlength')) {
           <p>Description must have atleast 20 characters</p>
           }
         </div>

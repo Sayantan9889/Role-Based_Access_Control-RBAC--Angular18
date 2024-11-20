@@ -63,8 +63,8 @@ export class CreateProductComponent {
       this.api.post('/create/product', formData).subscribe({
         next: (res: any) => {
           if (res.status == 200) {
-            console.log("product list: ", res.data);
-            this.alert.toastify('Product created successfully', 'success');
+            console.log("product : ", res.data);
+            this.alert.toastify(res.message || 'Product created successfully', 'success');
             this.router.navigate(['/home']);
           }
           else {
@@ -72,7 +72,7 @@ export class CreateProductComponent {
           }
         },
         error: (error) => {
-          this.alert.toastify(error.message || 'Failed to fetch products', 'error');
+          this.alert.toastify(error.error.message || 'Failed to fetch products', 'error');
         }
       })
     } else {

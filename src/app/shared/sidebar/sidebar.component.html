@@ -5,7 +5,7 @@
     <p>Admin</p>
   </div>
   <ul class="menu">
-    <li [routerLink]="['/home']" routerLinkActive="active" >Products</li>
+    <li [routerLink]="['/home']" routerLinkActive="active"  [class.active1]="isProductEditRoute()">Products</li>
     <li [routerLink]="['/add/product']" routerLinkActive="active">Add Product</li>
     <li>Logout</li>
   </ul>

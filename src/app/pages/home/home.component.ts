@@ -1,14 +1,16 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertService, ApiService } from '@services';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink} from '@angular/router';
+import { LineClampPipe } from '@pipes';
 
 export interface PeriodicElement {
   image: string,
   name: string,
   price: number,
+  description: string,
   type: string,
   status: string,
   id: string
@@ -17,16 +19,15 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, RouterLink],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, RouterLink, LineClampPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   private api = inject(ApiService);
   private alert = inject(AlertService);
-  private router = inject(Router);
 
-  displayedColumns: string[] = ['image', 'name', 'price', 'type', 'status', 'action'];
+  displayedColumns: string[] = ['image', 'name', 'price', 'description', 'type', 'status', 'action'];
   dataSource!: MatTableDataSource<PeriodicElement>;
 
   constructor() {
@@ -35,7 +36,7 @@ export class HomeComponent {
 
   private fetchAllPRoducts() {
     let rowData: any[] = [];
-    this.api.get('/get/products').subscribe({
+    this.api.get('get/products').subscribe({
       next: (res: any) => {
         if (res.status == 200) {
           // console.log("product list: ", res.data);
@@ -44,6 +45,7 @@ export class HomeComponent {
               image: prod.images ? prod.images[0] : '',
               name: prod.name,
               price: prod.price,
+              description: prod.description,
               type: prod.product_type,
               status: prod.status,
               id: prod._id
@@ -56,7 +58,7 @@ export class HomeComponent {
         }
       },
       error: (error) => {
-        this.alert.toastify(error.message || 'Failed to fetch products', 'error');
+        this.alert.toastify(error.error.message || 'Failed to fetch products', 'error');
       }
     })
   }
@@ -66,18 +68,19 @@ export class HomeComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  editProduct(element: any) {
-    console.log("edit element: ", element);
-
-  }
-
-  deleteProduct(element: any) {
-    console.log("delete element: ", element);
-
-  }
-
-  goTo(id:string) {
-    this.router.navigateByUrl(`/edit/product/${id}`)
-    console.log(`/edit/product/${id}`);
+  deleteProduct(id: string) {
+    this.api.delete('delete/product/'+id).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          this.alert.toastify('Product deleted successfully', 'success');
+        }
+        else {
+          this.alert.toastify(res.message || 'Failed to delete products', 'warning');
+        }
+      },
+      error: (error) => {
+        this.alert.toastify(error.error.message || 'Failed to fetch products', 'error');
+      }
+    })
   }
 }
