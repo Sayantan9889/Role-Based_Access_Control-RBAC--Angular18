@@ -23,7 +23,6 @@ export class RegistrationComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/)]),
     confirmPassword: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/)]),
-    role: new FormControl('admin') // ['admin', 'manager', 'employee']
   })
   protected tooglePassword = signal<{ pass1: 'text' | 'password', pass2: 'text' | 'password' }>({ pass1: 'password', pass2: 'password' });
 
@@ -38,7 +37,6 @@ export class RegistrationComponent {
     if (img && this.checkType(img)) {
       this.form.controls['image'].patchValue(img);
       this.profileImage = URL.createObjectURL(img);
-      console.log("this.profileImage: ", this.profileImage);
     }
   }
 
@@ -51,23 +49,22 @@ export class RegistrationComponent {
     if (form.valid) {
       console.log("form: ", form.value);
 
-      // this.api.post('user/login', form.value).subscribe({
-      //   next: (res: any) => {
-      //     if (res.status == 200) {
-      //       console.log("res: ", res);
-      //       this.storage.setData(res.data);
-      //       this.alert.toastify('Logged in successfully!', 'success');
-      //       this.router.navigate(['/']);
-      //     } else {
-      //       console.error(res.message);
-      //       this.alert.toastify(res.message, 'warning');
-      //     }
-      //   },
-      //   error: (err: any) => {
-      //     console.error('error: ', err);
-      //     this.alert.toastify(err.message, 'error');
-      //   }
-      // })
+      this.api.post('register/user', form.value).subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            console.log("res: ", res);
+            this.alert.toastify(res.message || 'Registered successfully! Please check mail and verify your account.', 'success');
+            this.router.navigate(['/login']);
+          } else {
+            console.error(res.message);
+            this.alert.toastify(res.message, 'warning');
+          }
+        },
+        error: (err: any) => {
+          console.error('error: ', err);
+          this.alert.toastify(err.message, 'error');
+        }
+      })
 
     } else {
       form.markAllAsTouched();

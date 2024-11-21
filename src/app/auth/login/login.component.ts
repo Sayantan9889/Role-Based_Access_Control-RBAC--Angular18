@@ -29,7 +29,7 @@ export class LoginComponent {
     if (form.valid) {
       console.log("form: ", form.value);
 
-      this.api.post('user/login', form.value).subscribe({
+      this.api.post('login/user', form.value).subscribe({
         next: (res: any) => {
           if (res.status == 200) {
             console.log("res: ", res);
