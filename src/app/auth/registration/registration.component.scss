@@ -54,7 +54,7 @@
           height: 150px;
 
           #profileImage {
-            position: absolute;
+            position: relative;
             width: 150px;
             height: 150px;
             border: 1px solid #ddd;
@@ -63,18 +63,22 @@
             background-color: #cacaca;
             opacity: 0;
             z-index: 999;
+            cursor: pointer;
           }
 
           .profile-pic {
+            position: relative;
+            top: -150px;
             width: 150px;
             height: 150px;
             border: 0px;
             border: 1px solid #ddd;
             border-radius: 50%;
             object-fit: cover;
+            z-index: 99;
 
             &.preview {
-              z-index: 99;
+              top: 0;
             }
           }
 

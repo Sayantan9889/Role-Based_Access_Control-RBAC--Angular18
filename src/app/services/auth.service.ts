@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { StorageService } from '@services';
 
 @Injectable({
@@ -12,6 +12,8 @@ export class AuthService {
   public isLoggedIn(): boolean {
     return !!this.storage.getToken().length;
   }
+
+  public isLoggedIn2:WritableSignal<boolean> = signal(!!this.storage.getToken().length);
 
   public getUserData() {
     return this.storage.getData();

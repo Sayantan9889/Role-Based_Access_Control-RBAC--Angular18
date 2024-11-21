@@ -8,7 +8,6 @@ const routes: Routes = [
     children: [
       { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
       { path: 'register', loadComponent: () => import('./registration/registration.component').then(m => m.RegistrationComponent) },
-      { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
       // { path: 'forgot-password', loadComponent: () => import('./forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
       // { path: 'reset-password', loadComponent: () => import('./reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
     ]

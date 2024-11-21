@@ -1,0 +1,6 @@
+shinchan acc. verification token : http://localhost:5300/api/account/confirmation/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoaW5jaGFuQHlvcG1haWwuY29tIiwiaWF0IjoxNzMyMjE4MjM5LCJleHAiOjE3MzIzMDQ2Mzl9.B9X6Q_4Wrj8qMUfxe4hbsuq7SetvF_s0XxwfVGfeIHU
+admin : sayantan@yopmail.com
+manager: nezuko@yopmail.com
+
+
+Pass: Test@1234

@@ -10,32 +10,37 @@ export class StorageService {
   constructor() { }
 
   public setData(data: any) {
-    console.log("data: ", data);
-    localStorage.setItem('name', data['name']);
-    localStorage.setItem('email', data['email']);
-    localStorage.setItem('role', data['role']);
-    localStorage.setItem('image', data['image']);
-    // sessionStorage.setItem('token', data['auth-token']);
+    window.sessionStorage.setItem('name', data['name']);
+    window.sessionStorage.setItem('email', data['email']);
+    window.sessionStorage.setItem('role', data['role']);
+    window.sessionStorage.setItem('image', data['image']);
+    window.sessionStorage.setItem('id', data['_id']);
+    // window.sessionStorage.setItem('token', data['auth-token']);
     this.cookie.set('token', data['token']);
   }
 
   public getData() {
     return {
-      name: localStorage.getItem('name'),
-      email: localStorage.getItem('email'),
-      image: localStorage.getItem('image'),
-      role: localStorage.getItem('role'),
+      name: window.sessionStorage.getItem('name'),
+      email: window.sessionStorage.getItem('email'),
+      image: window.sessionStorage.getItem('image'),
+      role: window.sessionStorage.getItem('role'),
+      id: window.sessionStorage.getItem('id'),
     };
   }
 
   public getToken() {
-    // return sessionStorage.getItem('token');
+    // return window.sessionStorage.getItem('token');
     return this.cookie.get('token');
   }
 
   public removeData() {
-    localStorage.clear();
-    // sessionStorage.removeItem('token');
+    window.sessionStorage.clear();
+    window.sessionStorage.removeItem('name');
+    window.sessionStorage.removeItem('email');
+    window.sessionStorage.removeItem('image');
+    window.sessionStorage.removeItem('role');
+    window.sessionStorage.removeItem('id');
     this.cookie.delete('token');
   }
 }

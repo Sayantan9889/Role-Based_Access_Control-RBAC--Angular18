@@ -47,9 +47,18 @@ export class RegistrationComponent {
 
   protected register(form: FormGroup): void {
     if (form.valid) {
-      console.log("form: ", form.value);
+      const formValue = form.value;
 
-      this.api.post('register/user', form.value).subscribe({
+      const formData = new FormData();
+      Object.keys(formValue).forEach((key) => {
+        formData.append(key, formValue[key]);
+      })
+
+      for(let [key, value] of Object.entries(formData)) {
+        console.log(key, ": ", value, ";");
+      }
+
+      this.api.post('register/user', formData).subscribe({
         next: (res: any) => {
           if (res.status == 200) {
             console.log("res: ", res);

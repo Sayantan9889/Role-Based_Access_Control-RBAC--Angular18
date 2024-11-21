@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AlertService, ApiService, StorageService } from '@services';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AlertService, ApiService, AuthService, StorageService } from '@services';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +12,11 @@ import { AlertService, ApiService, StorageService } from '@services';
 })
 export class LoginComponent {
   private storage = inject(StorageService);
+  private auth = inject(AuthService);
   private alert = inject(AlertService);
   private api = inject(ApiService);
   private router = inject(Router);
+  private activatedRouter = inject(ActivatedRoute);
 
 
   protected form = new FormGroup({
@@ -23,7 +25,16 @@ export class LoginComponent {
   })
   protected tooglePassword = signal<'text' | 'password'>('password');
 
-  constructor() { }
+  constructor() {
+    this.activatedRouter.queryParams.subscribe(params => {
+      const isVerified = params['verified'];
+      if (isVerified && isVerified == 'true') {
+        this.alert.toastify('Email verification successful!', 'success');
+      } else if(isVerified && isVerified == 'false') {
+        this.alert.toastify('Email verification failed.', 'error');
+      }
+    });
+  }
 
   protected login(form: FormGroup): void {
     if (form.valid) {
@@ -34,6 +45,7 @@ export class LoginComponent {
           if (res.status == 200) {
             console.log("res: ", res);
             this.storage.setData(res.data);
+            this.auth.isLoggedIn2.set(true);
             this.alert.toastify('Logged in successfully!', 'success');
             this.router.navigate(['/']);
           } else {
@@ -43,7 +55,7 @@ export class LoginComponent {
         },
         error: (err: any) => {
           console.error('error: ', err);
-          this.alert.toastify(err.message, 'error');
+          this.alert.toastify(err.error.message, 'error');
         }
       })
 
