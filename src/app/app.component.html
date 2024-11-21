@@ -1,13 +1,4 @@
 <div class="main-container">
   <app-header (sidenav)="sidenavOpenClose($event)"></app-header>
-  <div class="body-container sidenav-open">
-    <div class="left-container">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div class="right-container">
-      <div class="content-viewer">
-        <router-outlet />
-      </div>
-    </div>
-  </div>
+  <router-outlet />
 </div>
