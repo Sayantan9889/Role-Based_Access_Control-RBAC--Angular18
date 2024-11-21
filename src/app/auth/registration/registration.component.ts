@@ -16,7 +16,7 @@ export class RegistrationComponent {
   private api = inject(ApiService);
   private router = inject(Router);
 
-  protected profileImage: string = "";
+  protected profileImage:string = "";
   protected form = new FormGroup({
     image: new FormControl(),
     name: new FormControl('', Validators.required),
