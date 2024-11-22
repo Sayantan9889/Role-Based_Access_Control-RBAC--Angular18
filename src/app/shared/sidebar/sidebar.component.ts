@@ -25,5 +25,6 @@ export class SidebarComponent {
     this.authService.logout();
     this.authService.isLoggedIn2.set(false);
     this.router.navigate(['login']);
+    console.log("logout 1");
   }
 }

@@ -15,6 +15,7 @@
         </li>
         }
       </ul>
+      @if(isBrowser) {
       @if (!isLoggedIn()) {
       <button class="btn btn-outline-success" type="submit" [routerLink]="'/login'">Login</button>
       } @else {
@@ -22,6 +23,7 @@
         <img [src]="user?.image" alt="">
         <p>{{user?.name}}</p>
       </div>
+      }
       }
     </div>
   </div>

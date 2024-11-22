@@ -1,7 +1,8 @@
-import { Component, computed, effect, inject, output, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, output, PLATFORM_ID, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@services';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,8 @@ import { AuthService } from '@services';
 })
 export class HeaderComponent {
   private auth = inject(AuthService);
+  private platformId = inject(PLATFORM_ID);
+  protected isBrowser = isPlatformBrowser(this.platformId);
 
   protected sidenav = output<'open' | 'close'>();
   private isSidenavOpen: WritableSignal<boolean> = signal<boolean>(true);

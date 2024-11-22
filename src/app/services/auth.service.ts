@@ -21,5 +21,6 @@ export class AuthService {
 
   public logout(): void {
     this.storage.removeData();
+    console.log("logout 2");
   }
 }

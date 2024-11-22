@@ -16,7 +16,7 @@ export class StorageService {
     window.sessionStorage.setItem('image', data['image']);
     window.sessionStorage.setItem('id', data['_id']);
     // window.sessionStorage.setItem('token', data['auth-token']);
-    this.cookie.set('token', data['token']);
+    this.cookie.set('token', data['token'], 7, '/', '', false, 'Strict', false);
   }
 
   public getData() {
@@ -36,11 +36,7 @@ export class StorageService {
 
   public removeData() {
     window.sessionStorage.clear();
-    window.sessionStorage.removeItem('name');
-    window.sessionStorage.removeItem('email');
-    window.sessionStorage.removeItem('image');
-    window.sessionStorage.removeItem('role');
-    window.sessionStorage.removeItem('id');
+    this.cookie.delete('token', '/');
     this.cookie.delete('token');
   }
 }

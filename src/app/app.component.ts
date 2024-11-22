@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { ActivationEnd, NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
 import { DOCUMENT } from '@angular/common';
 
@@ -10,13 +10,18 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Assessment-11-11-2024';
   private document = inject(DOCUMENT);
   private router = inject(Router);
 
-  ngOnInit(): void {
-    // this.router.initialNavigation();
+  protected pageLoad: WritableSignal<boolean> = signal<boolean>(false);
+
+  constructor() {
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationStart) this.pageLoad.set(false);
+      if (e instanceof NavigationEnd) this.pageLoad.set(true);
+    });
   }
 
   protected sidenavOpenClose(event: 'open' | 'close') {
