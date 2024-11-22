@@ -21,6 +21,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(),
     provideHttpClient(withFetch(), withInterceptorsFromDi(), withInterceptors([httpInterceptor])),
-    provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()
+    provideAnimationsAsync()
   ]
 };

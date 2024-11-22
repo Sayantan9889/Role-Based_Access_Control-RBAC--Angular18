@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, Signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@services';
 
@@ -15,9 +15,16 @@ export class SidebarComponent {
   private authService = inject(AuthService);
 
   protected user:any = this.authService.getUserData();
+  private isProfileUpdated:Signal<number> = computed(() => this.authService.profileUpdated());
 
+  constructor() {
+    effect(() => {
+      const isProfileUpdated = this.isProfileUpdated();
+        this.user = this.authService.getUserData();
+    });
+  }
 
-  isProductEditRoute() {
+  isProductEditActive() {
     return this.router.url.includes('/edit/product/');
   }
 

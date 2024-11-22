@@ -10,6 +10,22 @@
   ._container {
     margin: auto 15px;
   }
+
+  // .rotating-element {
+  //   display: inline-block;
+  //   transition: transform 0.7s ease; // Smooth rotation effect
+  //   transform: rotate(0deg); // Initial state
+
+  //   &:hover {
+  //     transform: rotate(deg); // Rotate clockwise on hover
+  //   }
+
+  //   &:not(:hover) {
+  //     transform: rotate(-180deg); // Rotate anti-clockwise on hover out
+  //   }
+  // }
+
+
   .user-detail {
     height: 40px;
     width: auto;

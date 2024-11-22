@@ -122,7 +122,7 @@ export class UpdateProductComponent {
     } else {
       this.form.markAllAsTouched();
       /**Scroll to the first invalid field */
-      let _form = document.getElementById('add-product-form');
+      let _form = document.getElementById('update-product-form');
       if (_form) {
         let firstInvalidControl = _form.getElementsByClassName('ng-invalid')[0];
         console.log("firstInvalidControl: ", firstInvalidControl);

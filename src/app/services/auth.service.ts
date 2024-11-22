@@ -14,6 +14,7 @@ export class AuthService {
   }
 
   public isLoggedIn2:WritableSignal<boolean> = signal(!!this.storage.getToken().length);
+  public profileUpdated:WritableSignal<number> = signal(999999);
 
   public getUserData() {
     return this.storage.getData();

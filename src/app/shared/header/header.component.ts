@@ -1,13 +1,12 @@
 import { Component, computed, effect, inject, output, PLATFORM_ID, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@services';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, MatIconModule],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

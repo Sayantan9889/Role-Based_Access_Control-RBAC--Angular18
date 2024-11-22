@@ -1,23 +1,24 @@
+@let _editing = editing();
 <div class="profile-container">
   <div class="title">
     <div></div>
     <h5>Profile</h5>
-    <button class="btn btn-primary btn-sm editBtn"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+    <button class="btn btn-sm editBtn" [class]="_editing ? 'btn-danger' : 'btn-warning'" (click)="editing.set(!_editing)"><i class="fa-regular fa-pen-to-square"></i> {{_editing ? 'Cancel' : 'Edit'}}</button>
   </div>
   <div class="profile-info">
-    <form [formGroup]="form" id="add-product-form">
+    <form [formGroup]="form" id="update-user-form">
       <div class="field-container">
         <div class="profile-left-container">
           <div class="input-field upload-profile-img">
             <div class="profile-pic-wrap">
-              <input type="file" id="profileImage" (change)="handleImageUpload($event)" accept="image/*" />
+              <input type="file" id="profileImage" (change)="handleImageUpload($event)" accept="image/*" [disabled]="!_editing" />
               @if (profileImage) {
               <img class="profile-pic preview" [src]="profileImage" alt="Profile Preview" />
-              <mat-icon class="material-symbols-rounded verifed-mark">verified</mat-icon>
               } @else {
-                <img class="profile-pic" src="image/blank-profile-pic.jpg" alt="img placeholder">
+              <img class="profile-pic" [src]="profileImage ? profileImage : 'image/blank-profile-pic.jpg'" alt="img placeholder">
               }
-             </div>
+              <mat-icon class="verifed-mark" matTooltip="Verifed Account" matTooltipPosition="right">verified</mat-icon>
+            </div>
           </div>
         </div>
 
@@ -54,11 +55,11 @@
               @if(form.controls['email'] && form.controls['email'].touched &&
               form.controls['email'].hasError('required'))
               {
-              <p>email is required</p>
+              <p>Email is required</p>
               }
               @if(form.controls['email'] && form.controls['email'].touched && form.controls['email'].hasError('email'))
               {
-              <p>Only number is allowed</p>
+              <p>Enter a valid email</p>
               }
             </div>
           </div>
@@ -73,7 +74,9 @@
             </div>
           </div>
 
-          <button type="button" class="btn btn-primary px-5" (click)="updateProfile()">Add</button>
+          @if(_editing) {
+          <button type="button" class="btn btn-primary px-5 update-btn" (click)="updateProfile()">Update</button>
+          }
         </div>
       </div>
 

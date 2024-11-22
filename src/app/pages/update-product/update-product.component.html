@@ -3,7 +3,7 @@
     <div class="title">
       <h5>Edit Product</h5>
     </div>
-    <form [formGroup]="form" id="add-product-form">
+    <form [formGroup]="form" id="update-product-form">
       <div class="input-field mb-3">
         <div class="file-container" [class.error-div]="form.controls['imageArr'] && form.controls['imageArr'].touched && images.length < 1">
           <div class="file-upload-container">
@@ -105,7 +105,7 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-primary px-5" (click)="updateProduct()">Add</button>
+      <button type="button" class="btn btn-primary px-5" (click)="updateProduct()">Update</button>
     </form>
   </div>
 </div>

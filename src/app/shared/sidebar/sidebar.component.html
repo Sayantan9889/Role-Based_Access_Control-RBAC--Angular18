@@ -5,7 +5,7 @@
     <p>{{user.role | titlecase}}</p>
   </div>
   <ul class="menu">
-    <li [routerLink]="['/home']" routerLinkActive="active"  [class.active1]="isProductEditRoute()">Products</li>
+    <li [routerLink]="['/home']" routerLinkActive="active"  [class.active1]="isProductEditActive()">Products</li>
     <li [routerLink]="['/add/product']" routerLinkActive="active">Add Product</li>
     <li [routerLink]="['/profile/'+user?.id]" routerLinkActive="active">Profile</li>
     <li (click)="logout()">Logout</li>
