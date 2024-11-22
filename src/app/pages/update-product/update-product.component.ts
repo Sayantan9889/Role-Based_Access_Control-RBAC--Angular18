@@ -75,14 +75,35 @@ export class UpdateProductComponent {
     })
   }
 
-  removeImage(index: number) {
+  removeImage(index: number, image: File | string): void {
     this.images.splice(index, 1);
     const inputElement: any = document.getElementById('file-upload');
     inputElement && (inputElement.values = []);
+
+    if(typeof image === 'string') {
+      this.deleteImage(image);
+    }
   }
 
   private checkType(file: File) {
     return file.type.split('/')[0] === 'image' ? true : false;
+  }
+
+  protected deleteImage(image:string) {
+    this.api.post(`delete/product/image/${this.productId}`, {image}).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          // console.log("deleted image: ", res.data);
+          this.alert.toastify(res.message || 'Image deleted successfully','success');
+        }
+        else {
+          this.alert.toastify(res.message || 'Failed to delete image', 'warning');
+        }
+      },
+      error: (error) => {
+        this.alert.toastify(error.error.message || 'Failed to delete image', 'error');
+      }
+    });
   }
 
   protected updateProduct() {

@@ -23,7 +23,7 @@
               <img [src]="file.url" alt="">
               <p class="file-name">{{file.file.name || file.url}}</p>
             </div>
-            <button type="button" class="btn" (click)="removeImage( $index)"><i class="fa-solid fa-xmark"></i></button>
+            <button type="button" class="btn" (click)="removeImage( $index, file.file)"><i class="fa-solid fa-xmark"></i></button>
           </div>
           }
         </div>
