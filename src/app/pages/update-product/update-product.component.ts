@@ -76,12 +76,17 @@ export class UpdateProductComponent {
   }
 
   removeImage(index: number, image: File | string): void {
-    this.images.splice(index, 1);
-    const inputElement: any = document.getElementById('file-upload');
-    inputElement && (inputElement.values = []);
+    if (this.images.length <= 1) {
+      this.alert.toastify('At least one image is required', 'warning');
+      return;
+    } else {
+      this.images.splice(index, 1);
+      const inputElement: any = document.getElementById('file-upload');
+      inputElement && (inputElement.values = []);
 
-    if(typeof image === 'string') {
-      this.deleteImage(image);
+      if (typeof image === 'string') {
+        this.deleteImage(image);
+      }
     }
   }
 
@@ -89,12 +94,12 @@ export class UpdateProductComponent {
     return file.type.split('/')[0] === 'image' ? true : false;
   }
 
-  protected deleteImage(image:string) {
-    this.api.post(`delete/product/image/${this.productId}`, {image}).subscribe({
+  protected deleteImage(image: string) {
+    this.api.post(`delete/product/image/${this.productId}`, { image }).subscribe({
       next: (res: any) => {
         if (res.status == 200) {
           // console.log("deleted image: ", res.data);
-          this.alert.toastify(res.message || 'Image deleted successfully','success');
+          this.alert.toastify(res.message || 'Image deleted successfully', 'success');
         }
         else {
           this.alert.toastify(res.message || 'Failed to delete image', 'warning');
